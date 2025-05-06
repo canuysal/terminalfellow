@@ -11,7 +11,7 @@ Terminal Fellow is a CLI tool that understands your command line history and gen
 
 ## Example
 **User Input:**
-`tfa go to my last project and start the web server`
+`tf go to my last project and start the web server`
 
 **Generated Command:**
 `cd ~/myfs/codes/latestprojectiwasworkingonbasedonbashhistory && npm run dev`
@@ -20,7 +20,7 @@ Terminal Fellow is a CLI tool that understands your command line history and gen
 - **Language**: Python
 - **Vector Store**: ChromaDB for RAG implementation
 - **LLM Framework**: LlamaIndex for context-aware command generation
-- **Installation**: System-wide command (`tfa`)
+- **Installation**: System-wide command (`tf`)
 
 ## Project Roadmap
 1. **Setup & Core Architecture**
@@ -59,7 +59,7 @@ As of the latest implementation, we have:
 6. Implemented basic shell history analysis with frequency tracking
 7. Added configuration management system for API keys and settings
 8. Set up comprehensive testing infrastructure
-9. Improved UX with simplified command usage (tfa + prompt)
+9. Improved UX with simplified command usage (tf + prompt)
 10. Added interactive configuration for first-time users
 11. Enhanced output format with spinners and clean, copy-pastable results
 

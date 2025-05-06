@@ -62,7 +62,7 @@ class CommandGenerator:
                 sys.exit(1)
         else:
             print(
-                "No OpenAI API key found. Please run 'tfa --config' to set up your configuration.",
+                "No OpenAI API key found. Please run 'tf --config' to set up your configuration.",
                 file=sys.stderr,
             )
             sys.exit(1)

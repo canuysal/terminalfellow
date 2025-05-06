@@ -232,9 +232,9 @@ def interactive_config():
 
     # Show example usage
     console.print("\n[bold]Example Usage:[/]")
-    console.print("  [green]tfa find all pdf files created in the last 7 days[/]")
-    console.print("  [green]tfa extract audio from my_video.mp4[/]")
-    console.print("  [green]tfa create a backup of my project directory[/]")
+    console.print("  [green]tf find all pdf files created in the last 7 days[/]")
+    console.print("  [green]tf extract audio from my_video.mp4[/]")
+    console.print("  [green]tf create a backup of my project directory[/]")
 
     return True
 
@@ -248,7 +248,7 @@ def generate_command(prompt):
             # If still no API key, exit
             if not config_success or not get_openai_api_key():
                 console.print(
-                    "[bold red]No OpenAI API key found. Please run 'tfa --config' to set up your configuration.[/]"
+                    "[bold red]No OpenAI API key found. Please run 'tf --config' to set up your configuration.[/]"
                 )
                 return False
 
@@ -320,7 +320,7 @@ def main():
         # If no specific command matched, treat everything as prompt
         prompt = " ".join(args)
         if not prompt.strip():
-            console.print("[bold yellow]Please provide a prompt after 'tfa'[/]")
+            console.print("[bold yellow]Please provide a prompt after 'tf'[/]")
             return
 
         # Generate command based on prompt
