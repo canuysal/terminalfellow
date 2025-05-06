@@ -11,6 +11,15 @@ setup(
         "typer",
         "rich",
     ],
+    extras_require={
+        "dev": [
+            "pytest>=7.4.2",
+            "black>=23.9.1",
+            "flake8>=6.1.0",
+            "mypy>=1.5.1",
+            "pytest-mock>=3.11.1",
+        ],
+    },
     entry_points={
         "console_scripts": [
             "tfa=terminalfellow.cli.main:app",
