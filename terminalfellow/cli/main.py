@@ -4,11 +4,13 @@ import os
 import sys
 import time
 import typer
+import questionary
 from rich.console import Console
 from rich.panel import Panel
 from rich.spinner import Spinner
 from rich import print as rprint
 from typing import Optional, List
+import enum
 
 from terminalfellow import __version__
 from terminalfellow.core.generator import CommandGenerator
@@ -27,9 +29,21 @@ generator = CommandGenerator()
 history_analyzer = HistoryAnalyzer()
 
 
+class ModelProvider(str, enum.Enum):
+    OPENAI = "OpenAI"
+    CLAUDE = "Claude (Coming Soon)"
+    GEMINI = "Gemini (Coming Soon)"
+
+
+class OpenAIModel(str, enum.Enum):
+    GPT_3_5_TURBO = "gpt-3.5-turbo"
+    GPT_4 = "gpt-4"
+    GPT_4_TURBO = "gpt-4-turbo"
+
+
 @app.callback()
 def callback():
-    """Terminal Fellow: Your intelligent terminal assistant."""
+    """Terminal Fellow: Your fellow terminal assistant."""
 
 
 @app.command()
@@ -52,6 +66,11 @@ def configure(
     show: bool = typer.Option(False, "--show", help="Show current configuration"),
 ):
     """Configure Terminal Fellow settings."""
+    # If --config is provided without other args, run interactive config
+    if len(sys.argv) == 2 and sys.argv[1] == "--config":
+        interactive_config()
+        return
+
     if openai_api_key:
         set_openai_api_key(openai_api_key)
         rprint("[bold green]OpenAI API key set successfully[/]")
@@ -87,69 +106,136 @@ def configure(
 
         history_file = get_config_value("history_file", "[Not set]")
         use_history = get_config_value("use_history", False)
+        model_provider = get_config_value("model_provider", "OpenAI")
+        model = get_config_value("model", "gpt-3.5-turbo")
 
         rprint("[bold blue]Current Configuration:[/]")
-        rprint(f"[bold]OpenAI API Key:[/] {api_key}")
+        rprint(f"[bold]Model Provider:[/] {model_provider}")
+        rprint(f"[bold]Model:[/] {model}")
+        rprint(f"[bold]API Key:[/] {api_key}")
         rprint(f"[bold]History File:[/] {history_file}")
         rprint(f"[bold]Use Command History:[/] {'Yes' if use_history else 'No'}")
 
 
 def interactive_config():
-    """Run interactive configuration if no API keys are found."""
-    console.print("\n[bold blue]Welcome to Terminal Fellow![/]")
-    console.print("Let's set up your configuration...\n")
+    """Run interactive configuration wizard for Terminal Fellow."""
+    console.print("\n[bold blue]Terminal Fellow Configuration Wizard[/]")
+    console.print("[blue]----------------------------------------[/]\n")
 
-    # Ask for OpenAI API key
-    api_key = get_openai_api_key()
-    if not api_key:
-        console.print("[yellow]No OpenAI API key found.[/]")
-        api_key = typer.prompt("Enter your OpenAI API key", hide_input=True)
+    config = load_config()
+
+    # Step 1: Select model provider
+    console.print("[bold]Step 1:[/] Select AI Provider")
+    provider_options = [provider.value for provider in ModelProvider]
+
+    provider_choice = questionary.select(
+        "", choices=provider_options, default=provider_options[0]
+    ).ask()
+
+    if provider_choice in [ModelProvider.CLAUDE.value, ModelProvider.GEMINI.value]:
+        console.print(
+            f"\n[yellow]Note: {provider_choice} is coming soon. Using OpenAI for now.[/]\n"
+        )
+        provider_choice = ModelProvider.OPENAI.value
+
+    config["model_provider"] = provider_choice
+    console.print(f"[green]Selected provider: {provider_choice}[/]\n")
+
+    # Step 2: Select OpenAI model
+    console.print("[bold]Step 2:[/] Select OpenAI Model")
+    model_options = [model.value for model in OpenAIModel]
+
+    model_choice = questionary.select(
+        "", choices=model_options, default=model_options[0]
+    ).ask()
+
+    config["model"] = model_choice
+    console.print(f"[green]Selected model: {model_choice}[/]\n")
+
+    # Step 3: Set API key
+    console.print("[bold]Step 3:[/] Set API Key")
+    current_api_key = get_openai_api_key()
+    if current_api_key:
+        masked_key = f"{current_api_key[:4]}...{current_api_key[-4:]}"
+        console.print(f"Current API key: {masked_key}")
+        change_key = questionary.confirm(
+            "Do you want to change your API key?", default=False
+        ).ask()
+        if change_key:
+            api_key = questionary.password("Enter your OpenAI API key:").ask()
+            set_openai_api_key(api_key)
+            console.print("[green]API key updated successfully![/]\n")
+    else:
+        api_key = questionary.password("Enter your OpenAI API key:").ask()
         if not api_key:
             console.print("[bold red]No API key provided. Configuration cancelled.[/]")
             return False
-
         set_openai_api_key(api_key)
-        console.print("[green]API key saved successfully![/]")
+        console.print("[green]API key saved successfully![/]\n")
 
-    # Ask about history usage
-    config = load_config()
-    if "use_history" not in config:
-        use_history = typer.confirm(
-            "Would you like to use command history for context?", default=True
-        )
-        config["use_history"] = use_history
-        save_config(config)
+    # Step 4: Configure history usage
+    console.print("[bold]Step 4:[/] Command History")
+    use_history = questionary.confirm(
+        "Would you like to use command history for context?",
+        default=config.get("use_history", True),
+    ).ask()
 
-        if use_history:
-            # Check if history file path is set and valid
-            history_file = config.get("history_file")
-            if not history_file or not os.path.exists(os.path.expanduser(history_file)):
-                # Try to detect shell type and set default history file
-                shell = os.environ.get("SHELL", "")
-                if "zsh" in shell:
-                    default_history = "~/.zsh_history"
-                elif "fish" in shell:
-                    default_history = "~/.local/share/fish/fish_history"
-                else:
-                    default_history = "~/.bash_history"
+    config["use_history"] = use_history
 
-                history_file = typer.prompt(
-                    f"Path to your shell history file", default=default_history
+    if use_history:
+        # Check if history file path is set and valid
+        history_file = config.get("history_file")
+        if not history_file or not os.path.exists(os.path.expanduser(history_file)):
+            # Try to detect shell type and set default history file
+            shell = os.environ.get("SHELL", "")
+            if "zsh" in shell:
+                default_history = "~/.zsh_history"
+            elif "fish" in shell:
+                default_history = "~/.local/share/fish/fish_history"
+            else:
+                default_history = "~/.bash_history"
+
+            history_file = questionary.text(
+                "Path to your shell history file:", default=default_history
+            ).ask()
+
+            # Expand the path and save
+            history_file = os.path.expanduser(history_file)
+            if not os.path.exists(history_file):
+                console.print(
+                    f"[yellow]Warning: {history_file} does not exist. Please check the path.[/]"
                 )
 
-                # Expand the path and save
-                history_file = os.path.expanduser(history_file)
-                if not os.path.exists(history_file):
-                    console.print(
-                        f"[yellow]Warning: {history_file} does not exist. Please check the path.[/]"
-                    )
+            config["history_file"] = history_file
 
-                config["history_file"] = history_file
-                save_config(config)
+    # Save configuration
+    save_config(config)
 
+    # Show final configuration
+    console.print("\n[bold blue]Configuration Complete![/]")
+    console.print("[blue]----------------------[/]")
+
+    console.print("[bold]Your Configuration:[/]")
+    console.print(f"  Provider: [green]{config.get('model_provider')}[/]")
+    console.print(f"  Model: [green]{config.get('model')}[/]")
+    api_key = get_openai_api_key() or "[Not set]"
+    if api_key != "[Not set]":
+        api_key = f"{api_key[:4]}...{api_key[-4:]}"
+    console.print(f"  API Key: [green]{api_key}[/]")
     console.print(
-        "\n[bold green]Configuration complete![/] You can now use Terminal Fellow.\n"
+        f"  Use History: [green]{'Yes' if config.get('use_history') else 'No'}[/]"
     )
+    if config.get("use_history"):
+        console.print(
+            f"  History File: [green]{config.get('history_file', '[Not set]')}[/]"
+        )
+
+    # Show example usage
+    console.print("\n[bold]Example Usage:[/]")
+    console.print("  [green]tfa find all pdf files created in the last 7 days[/]")
+    console.print("  [green]tfa extract audio from my_video.mp4[/]")
+    console.print("  [green]tfa create a backup of my project directory[/]")
+
     return True
 
 
@@ -162,7 +248,7 @@ def generate_command(prompt):
             # If still no API key, exit
             if not config_success or not get_openai_api_key():
                 console.print(
-                    "[bold red]No OpenAI API key found. Please run 'tfa config' to set up your configuration.[/]"
+                    "[bold red]No OpenAI API key found. Please run 'tfa --config' to set up your configuration.[/]"
                 )
                 return False
 
@@ -213,6 +299,10 @@ def main():
             return
 
         # Handle specific commands
+        if args[0] == "--config":
+            interactive_config()
+            return
+
         if args[0] == "config":
             # Extract just the config arguments
             config_args = args[1:] if len(args) > 1 else []

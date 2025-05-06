@@ -10,6 +10,7 @@ setup(
         "pydantic",
         "typer",
         "rich",
+        "questionary",
     ],
     extras_require={
         "dev": [
@@ -24,10 +25,10 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "tfa=terminalfellow.cli.main:main",
+            "tf=terminalfellow.cli.main:main",
         ],
     },
-    author="Terminal Fellow Team",
+    author="Can Uysal",
     description=(
         "CLI tool that understands command line history and "
         "generates commands based on natural language"

@@ -30,6 +30,9 @@ def load_config() -> Dict[str, Any]:
             "history_file": os.path.expanduser("~/.bash_history"),
             "default_prompt_type": "default",
             "max_history_items": 10,
+            "model_provider": "OpenAI",
+            "model": "gpt-3.5-turbo",
+            "use_history": True,
         }
         save_config(default_config)
         return default_config
@@ -44,6 +47,9 @@ def load_config() -> Dict[str, Any]:
             "history_file": os.path.expanduser("~/.bash_history"),
             "default_prompt_type": "default",
             "max_history_items": 10,
+            "model_provider": "OpenAI",
+            "model": "gpt-3.5-turbo",
+            "use_history": True,
         }
 
 

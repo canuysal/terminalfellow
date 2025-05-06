@@ -9,7 +9,7 @@ from llama_index.llms.openai import OpenAI
 from llama_index.core.prompts import PromptTemplate
 
 from terminalfellow.core import prompts
-from terminalfellow.utils.config import get_openai_api_key
+from terminalfellow.utils.config import get_openai_api_key, get_config_value
 
 
 class CommandGenerator:
@@ -34,6 +34,9 @@ class CommandGenerator:
         # Get OpenAI API key from config or environment
         api_key = self.config.get("openai_api_key") or get_openai_api_key()
 
+        # Get the model from config or default to gpt-3.5-turbo
+        model = self.config.get("model") or get_config_value("model", "gpt-3.5-turbo")
+
         if api_key:
             # Set the API key in the environment
             os.environ["OPENAI_API_KEY"] = api_key
@@ -41,7 +44,7 @@ class CommandGenerator:
             try:
                 # Try to use OpenAI if API key is available
                 self.llm = OpenAI(
-                    model="gpt-3.5-turbo",
+                    model=model,
                     temperature=0.1,
                     system_prompt=system_prompt,
                     api_key=api_key,
@@ -59,7 +62,7 @@ class CommandGenerator:
                 sys.exit(1)
         else:
             print(
-                "No OpenAI API key found. Please run 'tfa config' to set up your configuration.",
+                "No OpenAI API key found. Please run 'tfa --config' to set up your configuration.",
                 file=sys.stderr,
             )
             sys.exit(1)

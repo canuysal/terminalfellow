@@ -80,3 +80,5 @@
 ## Edge Cases
 - [x] Prevent loop calls for unattended terminals
 - [x] Remove template based fallback mode on no llm key
+- [ ] Add --explain mode.
+- [ ] Edit help menu.
