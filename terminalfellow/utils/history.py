@@ -2,6 +2,9 @@
 import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+from collections import Counter
+
+from terminalfellow.utils.config import get_config_value
 
 class HistoryAnalyzer:
     """Analyze shell command history."""
@@ -20,8 +23,8 @@ class HistoryAnalyzer:
         Returns:
             Path to the default shell history file
         """
-        # Default to bash history for now
-        return os.path.expanduser("~/.bash_history")
+        # Get history file from config, or default to bash history
+        return get_config_value("history_file", os.path.expanduser("~/.bash_history"))
 
     def read_history(self) -> List[str]:
         """Read the shell history file.
@@ -42,10 +45,21 @@ class HistoryAnalyzer:
             Dictionary with analysis results
         """
         history = self.read_history()
+        max_items = get_config_value("max_history_items", 10)
 
-        # Simple analysis for now
+        # Create command frequency counter
+        command_counter = Counter()
+        for cmd in history:
+            # Use the first word as the command name
+            command_name = cmd.split()[0] if cmd and ' ' in cmd else cmd
+            command_counter[command_name] += 1
+
+        # Find most common commands
+        common_commands = command_counter.most_common(10)
+
         return {
             "count": len(history),
-            "most_recent": history[-10:] if history else [],
+            "most_recent": history[-max_items:] if history else [],
+            "common_commands": common_commands,
             # More sophisticated analysis to be added
         }
