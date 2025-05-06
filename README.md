@@ -1,8 +1,6 @@
 # Terminal Fellow
 
-A CLI fellow who generates bash commands or scripts based on natural language requests.
-
-It can also understand you better if you let it learn your bash history by using a local vector db.
+A CLI tool that understands your command line history and generates commands or scripts based on natural language requests.
 
 ## Features
 
@@ -18,30 +16,71 @@ It can also understand you better if you let it learn your bash history by using
 git clone https://github.com/yourusername/terminalfellow.git
 cd terminalfellow
 
-# Currently on dev, so setup a virtual env.
-conda create -n terminalfellow
+# Set up a virtual environment (recommended)
+conda create -n terminalfellow python=3.12
 conda activate terminalfellow
 
 # Install the package
 pip install -e .
 ```
 
-## Usage (intended, wip)
+## Configuration
+
+Terminal Fellow can be configured to use the OpenAI API for more intelligent command generation:
+
+```bash
+# Set your OpenAI API key
+python -m terminalfellow.cli.main config --openai-api-key "your-api-key"
+
+# Set a custom shell history file (default is ~/.bash_history)
+python -m terminalfellow.cli.main config --history-file ~/.zsh_history
+
+# Show current configuration
+python -m terminalfellow.cli.main config --show
+```
+
+## Usage
+
+```bash
+# Basic usage - generate a command
+python -m terminalfellow.cli.main generate "list all Python files in the current directory"
+
+# Use command history as context
+python -m terminalfellow.cli.main generate "repeat the last git command" --history
+
+# Use advanced mode for more precise commands
+python -m terminalfellow.cli.main generate "find all files modified in the last 24 hours" --advanced
+
+# Generate and execute the command
+python -m terminalfellow.cli.main generate "create a backup of this directory" --execute
+
+# Create an alias for easier usage
+python -m terminalfellow.cli.main alias
+
+# Or add to your ~/.bashrc:
+# alias tfa='python -m terminalfellow.cli.main generate'
+```
+
+### Using the CLI
+
+After installation, you can use the `tfa` command directly:
 
 ```bash
 # Basic usage
-tfa "go to my last project and start the web server"
+tfa generate "list files modified today"
 
-# Get help
-tfa --help
+# With options
+tfa generate "find large files" --advanced --execute
+
+# Configure
+tfa config --openai-api-key "your-api-key"
 ```
 
-## Current usage:
+### Command Line Options
 
-```
-cd terminalfellow/cli
-python ./main.py
-```
+- `--history`, `-h`: Use command history for context
+- `--advanced`, `-a`: Use advanced prompt for command generation
+- `--execute`, `-e`: Execute the generated command
 
 ## Development
 
@@ -49,10 +88,13 @@ python ./main.py
 # Install development dependencies
 pip install -e ".[dev]"
 
+# Or install individually
+pip install pytest black flake8 mypy
+
 # Run tests
 pytest
 ```
 
 ## License
 
-See the [LICENSE](LICENSE) file for details, MIT.
+See the [LICENSE](LICENSE) file for details.
