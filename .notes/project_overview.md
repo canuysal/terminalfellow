@@ -50,15 +50,18 @@ Terminal Fellow is a CLI tool that understands your command line history and gen
    - User feedback integration
 
 ## Current Status
-As of the proof of concept implementation, we have:
+As of the latest implementation, we have:
 1. Created a modular project structure with separation of concerns
 2. Set up a conda environment with Python 3.12
 3. Implemented LlamaIndex-based command generation
 4. Created a sophisticated command-line interface with Typer and Rich
-5. Developed a template-based fallback when API keys aren't available
+5. Removed template-based fallback, now requiring API keys
 6. Implemented basic shell history analysis with frequency tracking
 7. Added configuration management system for API keys and settings
 8. Set up comprehensive testing infrastructure
+9. Improved UX with simplified command usage (tfa + prompt)
+10. Added interactive configuration for first-time users
+11. Enhanced output format with spinners and clean, copy-pastable results
 
 ## Next Steps
 1. Implement ChromaDB integration for vector storage

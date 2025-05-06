@@ -36,17 +36,20 @@
 - [ ] Implement response formatting
 
 ## 5. CLI Development
-- [ ] Create command-line interface
-- [ ] Implement natural language request parser
-- [ ] Develop command suggestion mechanism
-- [ ] Add command execution functionality
-- [ ] Create configuration management
+- [x] Create command-line interface
+- [x] Implement natural language request parser
+- [x] Develop command suggestion mechanism
+- [x] Add command execution functionality
+- [x] Create configuration management
+- [x] Improve UX for simpler command usage
+- [x] Add interactive configuration
+- [x] Implement spinner and clean output formatting
 
 ## 6. Installation & Packaging
-- [ ] Create setup.py for packaging
-- [ ] Implement system-wide command installation
-- [ ] Develop user configuration system
-- [ ] Create installation documentation
+- [x] Create setup.py for packaging
+- [x] Implement system-wide command installation
+- [x] Develop user configuration system
+- [x] Create installation documentation
 
 ## 7. Testing & Quality Assurance
 - [ ] Write unit tests
@@ -56,10 +59,10 @@
 - [ ] User acceptance testing
 
 ## 8. Documentation
-- [ ] Create user guide
+- [x] Create user guide
 - [ ] Develop API documentation
-- [ ] Write developer setup instructions
-- [ ] Create usage examples
+- [x] Write developer setup instructions
+- [x] Create usage examples
 
 ## 9. Continuous Integration
 - [ ] Set up CI/CD pipeline
@@ -75,5 +78,5 @@
 
 
 ## Edge Cases
-- Prevent loop calls for unattended terminals, ie while true; do tfa echo hello..
-- Remove template based fb mode on no llm key.
+- [x] Prevent loop calls for unattended terminals
+- [x] Remove template based fallback mode on no llm key

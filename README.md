@@ -26,61 +26,41 @@ pip install -e .
 
 ## Configuration
 
-Terminal Fellow can be configured to use the OpenAI API for more intelligent command generation:
+On first use, Terminal Fellow will walk you through the configuration process if no API keys are found.
+
+You can also configure it manually:
 
 ```bash
+# Configure Terminal Fellow
+tfa config
+
 # Set your OpenAI API key
-python -m terminalfellow.cli.main config --openai-api-key "your-api-key"
+tfa config --openai-api-key "your-api-key"
 
 # Set a custom shell history file (default is ~/.bash_history)
-python -m terminalfellow.cli.main config --history-file ~/.zsh_history
+tfa config --history-file ~/.zsh_history
+
+# Enable or disable command history usage
+tfa config --use-history true
 
 # Show current configuration
-python -m terminalfellow.cli.main config --show
+tfa config --show
 ```
 
 ## Usage
 
-```bash
-# Basic usage - generate a command
-python -m terminalfellow.cli.main generate "list all Python files in the current directory"
-
-# Use command history as context
-python -m terminalfellow.cli.main generate "repeat the last git command" --history
-
-# Use advanced mode for more precise commands
-python -m terminalfellow.cli.main generate "find all files modified in the last 24 hours" --advanced
-
-# Generate and execute the command
-python -m terminalfellow.cli.main generate "create a backup of this directory" --execute
-
-# Create an alias for easier usage
-python -m terminalfellow.cli.main alias
-
-# Or add to your ~/.bashrc:
-# alias tfa='python -m terminalfellow.cli.main generate'
-```
-
-### Using the CLI
-
-After installation, you can use the `tfa` command directly:
+After installation, simply use the `tfa` command followed by your request:
 
 ```bash
 # Basic usage
-tfa generate "list files modified today"
+tfa list files modified today
 
-# With options
-tfa generate "find large files" --advanced --execute
+# The entire text after "tfa" is treated as your request
+tfa find all python files and count their lines
 
-# Configure
-tfa config --openai-api-key "your-api-key"
+# You can use it in a pipeline
+tfa create a JSON file with my CPU info | jq
 ```
-
-### Command Line Options
-
-- `--history`, `-h`: Use command history for context
-- `--advanced`, `-a`: Use advanced prompt for command generation
-- `--execute`, `-e`: Execute the generated command
 
 ## Development
 

@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "tfa=terminalfellow.cli.main:app",
+            "tfa=terminalfellow.cli.main:main",
         ],
     },
     author="Terminal Fellow Team",
