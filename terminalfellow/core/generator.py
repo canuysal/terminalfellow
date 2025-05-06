@@ -1,4 +1,5 @@
 """Command generation module for Terminal Fellow."""
+
 from typing import Optional, Dict, Any, List
 import os
 
@@ -8,6 +9,7 @@ from llama_index.core.prompts import PromptTemplate
 
 from terminalfellow.core import prompts
 from terminalfellow.utils.config import get_openai_api_key
+
 
 class CommandGenerator:
     """Generate commands based on natural language requests."""
@@ -26,8 +28,9 @@ class CommandGenerator:
         """Set up the LLM for command generation."""
         # For now, we'll use a simple template-based approach
         # Later this will be enhanced with RAG using command history
-        system_prompt = self.config.get("system_prompt",
-                                       prompts.get_system_prompt(self.prompt_type))
+        system_prompt = self.config.get(
+            "system_prompt", prompts.get_system_prompt(self.prompt_type)
+        )
 
         # Get OpenAI API key from config or environment
         api_key = self.config.get("openai_api_key") or get_openai_api_key()
@@ -42,7 +45,7 @@ class CommandGenerator:
                     model="gpt-3.5-turbo",
                     temperature=0.1,
                     system_prompt=system_prompt,
-                    api_key=api_key
+                    api_key=api_key,
                 )
                 Settings.llm = self.llm
                 self.using_openai = True
@@ -83,7 +86,7 @@ class CommandGenerator:
                 parts = query.lower().split(key, 1)
                 if len(parts) > 1 and parts[1].strip():
                     # Try to extract a meaningful argument
-                    arg = parts[1].strip().split()[0].strip('.,!? ')
+                    arg = parts[1].strip().split()[0].strip(".,!? ")
                     return template.format(arg)
                 return template.replace(" {}", "").replace("{}", "")
 

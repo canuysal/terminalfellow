@@ -1,10 +1,12 @@
 """Shell history analyzer for Terminal Fellow."""
+
 import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from collections import Counter
 
 from terminalfellow.utils.config import get_config_value
+
 
 class HistoryAnalyzer:
     """Analyze shell command history."""
@@ -35,7 +37,7 @@ class HistoryAnalyzer:
         if not os.path.exists(self.history_file):
             return []
 
-        with open(self.history_file, 'r', encoding='utf-8', errors='ignore') as f:
+        with open(self.history_file, "r", encoding="utf-8", errors="ignore") as f:
             return [line.strip() for line in f if line.strip()]
 
     def analyze_history(self) -> Dict[str, Any]:
@@ -51,7 +53,7 @@ class HistoryAnalyzer:
         command_counter = Counter()
         for cmd in history:
             # Use the first word as the command name
-            command_name = cmd.split()[0] if cmd and ' ' in cmd else cmd
+            command_name = cmd.split()[0] if cmd and " " in cmd else cmd
             command_counter[command_name] += 1
 
         # Find most common commands

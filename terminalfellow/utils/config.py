@@ -9,9 +9,11 @@ from typing import Dict, Any, Optional
 DEFAULT_CONFIG_DIR = os.path.expanduser("~/.config/terminalfellow")
 DEFAULT_CONFIG_FILE = os.path.join(DEFAULT_CONFIG_DIR, "config.json")
 
+
 def ensure_config_dir() -> None:
     """Ensure the configuration directory exists."""
     os.makedirs(DEFAULT_CONFIG_DIR, exist_ok=True)
+
 
 def load_config() -> Dict[str, Any]:
     """Load configuration from the config file.
@@ -33,7 +35,7 @@ def load_config() -> Dict[str, Any]:
         return default_config
 
     try:
-        with open(DEFAULT_CONFIG_FILE, 'r') as f:
+        with open(DEFAULT_CONFIG_FILE, "r") as f:
             return json.load(f)
     except (json.JSONDecodeError, IOError):
         # Return a default configuration if the file can't be loaded
@@ -44,6 +46,7 @@ def load_config() -> Dict[str, Any]:
             "max_history_items": 10,
         }
 
+
 def save_config(config: Dict[str, Any]) -> None:
     """Save configuration to the config file.
 
@@ -52,8 +55,9 @@ def save_config(config: Dict[str, Any]) -> None:
     """
     ensure_config_dir()
 
-    with open(DEFAULT_CONFIG_FILE, 'w') as f:
+    with open(DEFAULT_CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=2)
+
 
 def get_openai_api_key() -> Optional[str]:
     """Get the OpenAI API key from environment variable or config file.
@@ -70,6 +74,7 @@ def get_openai_api_key() -> Optional[str]:
     config = load_config()
     return config.get("openai_api_key")
 
+
 def set_openai_api_key(api_key: str) -> None:
     """Set the OpenAI API key in the config file.
 
@@ -79,6 +84,7 @@ def set_openai_api_key(api_key: str) -> None:
     config = load_config()
     config["openai_api_key"] = api_key
     save_config(config)
+
 
 def get_config_value(key: str, default: Any = None) -> Any:
     """Get a configuration value by key.
