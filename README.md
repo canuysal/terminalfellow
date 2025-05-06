@@ -89,7 +89,7 @@ tfa config --openai-api-key "your-api-key"
 pip install -e ".[dev]"
 
 # Or install individually
-pip install pytest black flake8 mypy
+pip install pytest black flake8 mypy pre-commit types-setuptools
 
 # Run tests
 pytest
