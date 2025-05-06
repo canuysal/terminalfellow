@@ -19,7 +19,7 @@ setup(
             "mypy>=1.5.1",
             "pytest-mock>=3.11.1",
             "types-setuptools>=80.3.0.20250505",
-            "pre_commit>=4.2.0"
+            "pre_commit>=4.2.0",
         ],
     },
     entry_points={

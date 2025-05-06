@@ -50,7 +50,7 @@ class HistoryAnalyzer:
         max_items = get_config_value("max_history_items", 10)
 
         # Create command frequency counter
-        command_counter = Counter()
+        command_counter: Counter = Counter()
         for cmd in history:
             # Use the first word as the command name
             command_name = cmd.split()[0] if cmd and " " in cmd else cmd

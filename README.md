@@ -89,10 +89,28 @@ tfa config --openai-api-key "your-api-key"
 pip install -e ".[dev]"
 
 # Or install individually
-pip install pytest black flake8 mypy pre-commit types-setuptools
+pip install pytest pre-commit
 
 # Run tests
 pytest
+```
+
+### Code Style and Linting
+
+The project uses the following tools for code quality:
+
+- **Black**: Code formatting (line length: 88)
+- **MyPy**: Static type checking
+- **Pre-commit**: Automated checks before commits
+
+To set up pre-commit hooks:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install hooks
+pre-commit install
 ```
 
 ## License
