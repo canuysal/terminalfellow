@@ -28,6 +28,9 @@ setup(
         ],
     },
     author="Terminal Fellow Team",
-    description="CLI tool that understands command line history and generates commands based on natural language",
+    description=(
+        "CLI tool that understands command line history and "
+        "generates commands based on natural language"
+    ),
     python_requires=">=3.8",
 )
