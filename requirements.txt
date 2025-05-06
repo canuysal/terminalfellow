@@ -1,0 +1,11 @@
+llama-index==0.12.34
+chromadb==1.0.8
+pydantic==2.11.4
+typer==0.15.3
+rich==14.0.0
+
+# Development dependencies
+pytest==7.4.2
+black==23.9.1
+flake8==6.1.0
+mypy==1.5.1
