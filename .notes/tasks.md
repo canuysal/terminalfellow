@@ -9,10 +9,10 @@
 - [x] Configure linting and code formatting
 
 ## 1.5 Proof of Concept
-- [ ] Install and configure LlamaIndex
-- [ ] Design prompt templates
-- [ ] Command generation
-- [ ] Create a PoC one-liner generator python script without history.
+- [x] Install and configure LlamaIndex
+- [x] Design prompt templates
+- [x] Command generation
+- [x] Create a PoC one-liner generator python script without history.
 
 ## 2. Shell History Integration
 - [x] Develop shell history reader
@@ -20,10 +20,6 @@
   - [ ] Zsh history parser (optional)
   - [ ] Fish history parser (optional)
 - [x] Create history data model
-- [ ] Implement history analysis utilities
-  - [ ] Command frequency analyzer
-  - [ ] Directory usage tracker
-  - [ ] Project context detector
 
 ## 3. Vector Database Implementation
 - [ ] Set up ChromaDB
@@ -76,3 +72,8 @@
 - [ ] Command history visualization
 - [ ] Custom command templates
 - [ ] User feedback system
+
+
+## Edge Cases
+- Prevent loop calls for unattended terminals, ie while true; do tfa echo hello..
+- Remove template based fb mode on no llm key.
