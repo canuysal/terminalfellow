@@ -45,15 +45,15 @@ The wizard allows you to:
 
 After installation, simply use the `tf` command followed by your request:
 
+_tf doesn't execute commands, it simply echoes them on the terminal._
+
 ```bash
 # Basic usage
-tf convert all pdfs in this directory to markdown and move it to a new folder "markdown_converted"
+tf extract audio from my_video.mp4 with 30 second intervals.
 
-# The entire text after "tf" is treated as your request
-tf tf extract audio from my_video.mp4
-
-# You can use it in a pipeline
+# Another example:
 tf create a JSON file with my CPU info
+
 ```
 
 ## Development

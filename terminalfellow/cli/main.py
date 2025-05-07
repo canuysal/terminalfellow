@@ -25,7 +25,6 @@ from terminalfellow.utils.config import (
 
 app = typer.Typer(help="Terminal Fellow: Your intelligent terminal assistant.")
 console = Console(stderr=True)  # Use stderr for console output to keep stdout clean
-generator = CommandGenerator()
 history_analyzer = HistoryAnalyzer()
 
 
@@ -163,14 +162,14 @@ def interactive_config():
         ).ask()
         if change_key:
             api_key = questionary.password("Enter your OpenAI API key:").ask()
-            set_openai_api_key(api_key)
+            config["openai_api_key"] = api_key
             console.print("[green]API key updated successfully![/]\n")
     else:
         api_key = questionary.password("Enter your OpenAI API key:").ask()
         if not api_key:
             console.print("[bold red]No API key provided. Configuration cancelled.[/]")
             return False
-        set_openai_api_key(api_key)
+        config["openai_api_key"] = api_key
         console.print("[green]API key saved successfully![/]\n")
 
     # Step 4: Configure history usage
@@ -241,6 +240,9 @@ def interactive_config():
 
 def generate_command(prompt):
     """Generate a command based on the natural language prompt."""
+
+    generator = CommandGenerator()
+
     try:
         # Check if API key exists, if not run interactive config
         if not get_openai_api_key():
