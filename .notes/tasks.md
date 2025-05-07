@@ -43,6 +43,8 @@
 - [x] Create configuration management
 - [x] Improve UX for simpler command usage
 - [x] Add interactive configuration
+- [x] Implement interactive configuration with arrow key navigation
+- [x] Fix API key handling to run configuration wizard when no key is found
 - [x] Implement spinner and clean output formatting
 
 ## 6. Installation & Packaging
@@ -80,5 +82,6 @@
 ## Edge Cases
 - [x] Prevent loop calls for unattended terminals
 - [x] Remove template based fallback mode on no llm key
+- [x] Fix immediate exit on first run with no API key
 - [ ] Add --explain mode.
 - [ ] Edit help menu.

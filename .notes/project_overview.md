@@ -11,10 +11,10 @@ Terminal Fellow is a CLI tool that understands your command line history and gen
 
 ## Example
 **User Input:**
-`tf go to my last project and start the web server`
+`tf convert all pdfs in this directory to markdown and move it to a new folder "markdown_converted"`
 
 **Generated Command:**
-`cd ~/myfs/codes/latestprojectiwasworkingonbasedonbashhistory && npm run dev`
+`mkdir -p markdown_converted && for pdf in *.pdf; do pdftotext "$pdf" "markdown_converted/$(basename "$pdf" .pdf).md"; done`
 
 ## Technical Stack
 - **Language**: Python
@@ -60,8 +60,9 @@ As of the latest implementation, we have:
 7. Added configuration management system for API keys and settings
 8. Set up comprehensive testing infrastructure
 9. Improved UX with simplified command usage (tf + prompt)
-10. Added interactive configuration for first-time users
-11. Enhanced output format with spinners and clean, copy-pastable results
+10. Added interactive configuration with arrow key navigation for model selection
+11. Fixed API key handling to automatically run the configuration wizard on first use
+12. Enhanced output format with spinners and clean, copy-pastable results
 
 ## Next Steps
 1. Implement ChromaDB integration for vector storage

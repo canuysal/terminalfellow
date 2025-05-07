@@ -26,40 +26,34 @@ pip install -e .
 
 ## Configuration
 
-On first use, Terminal Fellow will walk you through the configuration process if no API keys are found.
-
-You can also configure it manually:
+On first use, Terminal Fellow will walk you through the configuration process with the command:
 
 ```bash
-# Configure Terminal Fellow
-tfa config
-
-# Set your OpenAI API key
-tfa config --openai-api-key "your-api-key"
-
-# Set a custom shell history file (default is ~/.bash_history)
-tfa config --history-file ~/.zsh_history
-
-# Enable or disable command history usage
-tfa config --use-history true
-
-# Show current configuration
-tfa config --show
+# Run the interactive configuration wizard
+tf --config
 ```
+
+The wizard allows you to:
+- Select AI provider (currently supports OpenAI with Claude and Gemini coming soon)
+- Choose the OpenAI model (gpt-3.5-turbo, gpt-4, gpt-4-turbo)
+- Set or update your API key
+- Configure command history usage (wip)
+
+
 
 ## Usage
 
-After installation, simply use the `tfa` command followed by your request:
+After installation, simply use the `tf` command followed by your request:
 
 ```bash
 # Basic usage
-tfa list files modified today
+tf convert all pdfs in this directory to markdown and move it to a new folder "markdown_converted"
 
-# The entire text after "tfa" is treated as your request
-tfa find all python files and count their lines
+# The entire text after "tf" is treated as your request
+tf tf extract audio from my_video.mp4
 
 # You can use it in a pipeline
-tfa create a JSON file with my CPU info | jq
+tf create a JSON file with my CPU info
 ```
 
 ## Development
