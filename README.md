@@ -11,6 +11,12 @@ A CLI tool that understands your command line history and generates commands or 
 
 ## Installation
 
+Through pip:
+```bash
+pip install git+https://github.com/canuysal/terminalfellow
+```
+
+Manually:
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/terminalfellow.git
